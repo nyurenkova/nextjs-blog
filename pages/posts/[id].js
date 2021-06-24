@@ -24,7 +24,7 @@ export async function getStaticProps({ params }) {
 export default function Post({ postData }) {
   return (
     <Layout>
-      <Head>
+      <Head>404.js
         <title>{postData.title}</title>
       </Head>
       <article>
