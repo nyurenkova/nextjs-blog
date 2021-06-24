@@ -6,22 +6,16 @@ import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
-  const res = await fetch('https://api.github.com/repos/vercel/next.js');
-  const errorCode = res.ok ? false : res.statusCode;
-  const json = await res.json();
 
   return {
-    props: { errorCode, stars: json.stargazers_count, allPostsData },
+    props: { allPostsData },
   }
 }
 
 
-export default function Home({ allPostsData, errorCode, stars }) {
-  if (errorCode) {
-    return <Error statusCode={errorCode} />;
-  }
+export default function Home({ allPostsData }) {
 
   return (
     <Layout home>
@@ -51,7 +45,6 @@ export default function Home({ allPostsData, errorCode, stars }) {
           ))}
         </ul>
       </section>
-      <div>Next stars: {stars}</div>
     </Layout>
   )
 }
