@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { withRouter, NextRouter } from 'next/router';
 import Layout from '../../components/layout'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 import Date from '../../components/date'
@@ -22,12 +23,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 };
 
-export default function Post({ postData }: {
+function Post({ postData, router }: {
   postData: {
     title: string
     date: string
     contentHtml: string
-  }
+  },
+  router: NextRouter,
 }) {
   return (
     <Layout>
@@ -36,6 +38,7 @@ export default function Post({ postData }: {
       </Head>
       <article>
         <h1 className={utilStyles.headingXl}>{postData.title}</h1>
+        <h1 className={utilStyles.headingXl}>{router.query.id}</h1>
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
@@ -44,3 +47,4 @@ export default function Post({ postData }: {
     </Layout>
   )
 }
+export default withRouter(Post);

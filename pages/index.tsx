@@ -34,13 +34,19 @@ export default function Home({ allPostsData }: {
           (This is a sample website - you’ll be building a site like this on{' '}
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
+          <Link href={`/posts/first-post`}>
+              <a>First post</a>
+          </Link>
       </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {allPostsData && allPostsData.length > 0 && allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
+              <Link href={{
+                pathname: '/posts/[slug]',
+                query: { slug: encodeURIComponent(id) },
+              }}>
                 <a>{title}</a>
               </Link>
               <br />
