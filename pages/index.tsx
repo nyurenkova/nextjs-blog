@@ -1,10 +1,16 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { GetStaticProps } from 'next'
-import Date from '../components/date'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEffect } from 'react';
+// @ts-ignore
+import { RootState } from 'typesafe-actions';
+import { Dispatch } from 'redux';
+import { GetStaticProps } from 'next';
+import { connect } from 'react-redux';
+import Date from '../components/date';
+import Layout, { siteTitle } from '../components/layout';
+import utilStyles from '../styles/utils.module.css';
+import { getSortedPostsData } from '../lib/posts';
+import { fetchPosts } from '../store/actions/postAction';
 
 export const getStaticProps: GetStaticProps = async () => {
   const allPostsData = getSortedPostsData();
@@ -15,13 +21,18 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 
-export default function Home({ allPostsData }: {
+function Home({ allPostsData, fetchposts }: {
     allPostsData: {
         date: string
         title: string
         id: string
-    }[]
+    }[],
+  fetchposts: () => void,
 }) {
+
+  useEffect(() => {
+    fetchposts();
+  }, []);
 
   return (
     <Layout home>
@@ -60,3 +71,13 @@ export default function Home({ allPostsData }: {
     </Layout>
   )
 }
+
+const mapStateToProps = (state: RootState) => ({
+
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  // @ts-ignore
+  fetchposts: () => dispatch(fetchPosts())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
