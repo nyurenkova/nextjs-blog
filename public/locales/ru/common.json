@@ -1,0 +1,8 @@
+{
+  "h1": "Простой пример",
+  "change-locale": "Изменить Locale",
+  "to-second-page": "на вторую страницу",
+  "error-with-status": "На странице ({{statusCode}}) ошибка",
+  "error-without-status": "На странице какая-то ошибка",
+  "title": "Заголовок | next-i18next"
+}

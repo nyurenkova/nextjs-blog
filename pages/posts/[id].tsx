@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { withRouter, NextRouter } from 'next/router';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import Layout from '../../components/layout'
 import { getAllPostIds, getPostData } from '../../lib/posts'
 import Date from '../../components/date'
@@ -14,10 +16,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const postData = await getPostData(params?.id as string);
+
   return {
     props: {
+      ...locale && (await serverSideTranslations(locale, ['common'])),
       postData
     }
   }
@@ -31,9 +35,11 @@ function Post({ postData, router }: {
   },
   router: NextRouter,
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <Layout>
-      <Head>404.js
+      <Head>
         <title>{postData.title}</title>
       </Head>
       <article>
@@ -42,6 +48,8 @@ function Post({ postData, router }: {
         <div className={utilStyles.lightText}>
           <Date dateString={postData.date} />
         </div>
+        <h3>There wasn't {t('error-with-status', {statusCode: 404})}</h3>
+        <h3>{t('title')}</h3>
         <div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
       </article>
     </Layout>

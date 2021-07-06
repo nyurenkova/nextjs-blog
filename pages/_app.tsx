@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app'
 import NextNprogress from 'nextjs-progressbar';
 import { Provider } from 'react-redux';
+import { appWithTranslation } from 'next-i18next';
 import { createWrapper } from 'next-redux-wrapper';
 import store from '../store/store';
 import '../styles/global.css'
@@ -26,4 +27,4 @@ function App({ Component, pageProps }: AppProps) {
 }
 const makeStore = () => store;
 const wrapper = createWrapper(makeStore);
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(appWithTranslation(App));
