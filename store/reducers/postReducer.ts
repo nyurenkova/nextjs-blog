@@ -1,5 +1,4 @@
 import * as types from '../types';
-import {strictEqual} from "assert";
 
 const initialState = {
   posts: [],
@@ -8,7 +7,7 @@ const initialState = {
   error: null,
 };
 
-export const postReducer = (state=initialState, action) => {
+export const postReducer = (state=initialState, action: any) => {
   switch (action.type) {
     case types.GET_POSTS:
       return  {
