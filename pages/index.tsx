@@ -10,7 +10,7 @@ import Date from '../components/date';
 import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
-import { fetchPosts } from '../store/actions/postAction';
+import { fetchPosts } from '../store/feature/post/post';
 
 export const getStaticProps: GetStaticProps = async () => {
   const allPostsData = getSortedPostsData();
@@ -20,14 +20,14 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-
-function Home({ allPostsData, fetchposts }: {
+function Home({ allPostsData, fetchposts, posts }: {
     allPostsData: {
         date: string
         title: string
         id: string
     }[],
   fetchposts: () => void,
+  posts: any[],
 }) {
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function Home({ allPostsData, fetchposts }: {
 }
 
 const mapStateToProps = (state: RootState) => ({
-
+  posts: state.post.posts,
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   // @ts-ignore
