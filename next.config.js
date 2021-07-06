@@ -1,7 +1,12 @@
 require('dotenv').config();
 const { i18n } = require('./next-i18next.config');
+const { withSentryConfig } = require('@sentry/nextjs');
 
-module.exports = {
+const SentryWebpackPluginOptions = {
+  silent: true,
+};
+
+const moduleExports = {
   i18n,
   env: {
     customKey: process.env.MY_KEY,
@@ -28,3 +33,5 @@ module.exports = {
     ]
   },
 };
+
+module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);

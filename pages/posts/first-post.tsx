@@ -14,6 +14,11 @@ export default function FirstPost({ title }: FirstPostInterface) {
       <h1>{title}</h1>
       <img src="/images/profile.jpg" alt="Your Name" />
       <h1>The value of customKey is: {process.env.customKey}</h1>
+      <button type="button" onClick={() => {
+        throw new Error("Sentry Frontend Error");
+      }}>
+        Throw error
+      </button>
       <style jsx>{`
         h1 {
           color: red;
