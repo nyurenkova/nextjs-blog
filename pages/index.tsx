@@ -4,21 +4,22 @@ import { useEffect } from 'react';
 // @ts-ignore
 import { RootState } from 'typesafe-actions';
 import { Dispatch } from 'redux';
-import { GetStaticProps } from 'next';
 import { connect } from 'react-redux';
+import { wrapper } from '../store/store';
 import Date from '../components/date';
 import Layout, { siteTitle } from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
 import { fetchPosts } from '../store/feature/post/post';
 
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData();
-
-  return {
-    props: { allPostsData },
+export const getStaticProps  = wrapper.getStaticProps(store =>
+  async () => {
+    const allPostsData = getSortedPostsData();
+    // @ts-ignore
+    await store.dispatch(fetchPosts());
+    return { props: { allPostsData } };
   }
-};
+);
 
 function Home({ allPostsData, fetchposts, posts }: {
     allPostsData: {
@@ -31,7 +32,9 @@ function Home({ allPostsData, fetchposts, posts }: {
 }) {
 
   useEffect(() => {
-    fetchposts();
+    if (posts && posts.length < 1) {
+      fetchposts();
+    }
   }, []);
 
   return (
@@ -73,7 +76,7 @@ function Home({ allPostsData, fetchposts, posts }: {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  posts: state.post.posts,
+  posts: state?.postSliceReducer?.posts,
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   // @ts-ignore

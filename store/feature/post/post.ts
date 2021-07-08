@@ -26,7 +26,6 @@ const postSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    // @ts-ignore
     getPostsSuccess: (state, action: PayloadAction<any[]>) => {
       state.posts = action.payload;
       state.loading = false;
@@ -43,12 +42,11 @@ export const { postLoading, getPostsSuccess, postsError } = postSlice.actions;
 export const fetchPosts = () => async (dispatch: Dispatch) => {
   dispatch(postLoading());
   try {
-    const res = await axios.get('api/posts');
+    const res = await axios.get('https://cat-fact.herokuapp.com/facts/');
     dispatch(getPostsSuccess(res.data));
   } catch (e) {
     dispatch(postsError(e));
   }
 };
 
-// @ts-ignore
 export const { reducer } = postSlice;
